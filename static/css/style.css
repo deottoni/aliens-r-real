@@ -73,6 +73,8 @@ select {
   outline: none;
 }
 
+
+
 #table-area th {
   text-align: center;
 }
@@ -98,7 +100,7 @@ select {
   padding: 20px;
   margin: 0;
   background: black;
-  background-image: url("../images/nasa.jpg");
+  background-image: url("../images/aliens.jpeg");
   background-attachment: fixed;
   background-position: bottom center;
   background-size: cover;
@@ -106,6 +108,7 @@ select {
 
 .hero h1 {
   margin-top: 200px;
+  width: 100%;
   font-size: 0.1rem;
   animation: title 1.2s forwards linear;
 }
