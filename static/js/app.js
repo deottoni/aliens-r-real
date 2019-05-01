@@ -6,19 +6,19 @@ const tbody = d3.select("tbody").node();
 
 
 // // add content from data.js to table
-function renderTable() {
+function renderTable(dataset) {
   tbody.innerHTML = "";
-  for (let i = 0; i < tableData.length; i++) {
+  for (let i = 0; i < dataset.length; i++) {
 
-    // Get the current object and its fields
-    const data = tableData[i];
+    // get current objects and its fields
+    const data = dataset[i];
     const fields = Object.keys(data);
 
-    // Create a new row in the tbody, set the index to be i + startingIndex
+    // insert rows to tbody object
     const row = tbody.insertRow(i);
     for (let j = 0; j < fields.length; j++) {
 
-      // For every field in the table object, create a new cell at set its inner text to be the current value at the current field
+      // add cells to rows and set inner text of each object as cell value
       const field = fields[j];
       const cell = row.insertCell(j);
       cell.innerText = data[field];
@@ -27,58 +27,70 @@ function renderTable() {
 };
 
 
-// get elements of search types
-const dateInput = d3.select("#datetime");
-const cityInput = d3.select("#city");
-const stateInput = d3.select("#state");
-const countryInput = d3.select("#country");
-const shapeInput = d3.select("#shape");
-
 // Select the submit button
-// const filter_button = d3.select("#filter-btn");
+const filter_button = d3.select("#filter-btn");
+filter_button.on("click",handleSearchButtonClick)
+
+// const $searchBtn = document.querySelector("#filter-btn");
+// $searchBtn.addEventListener("click", handleSearchButtonClick);
 
 
-const $searchBtn = document.querySelector("#filter-btn");
-$searchBtn.addEventListener("click", handleSearchButtonClick);
-
-
-// function to filter based on given input
-// filter_button.on("click",function(){
-
-//     d3.event.preventDefault();
-    
-//     for(let i=0; i < inputType.length; i++){ 
-//         const inputElement = d3.select(inputType[i]);
-//         const inputValue = inputElement.property("value")
-
-//         const filteredData = tableData.filter(x => x.inputType[i] === inputValue);
-//         console.log(filteredData)
-// }});
-
-
+// function to filterdata
 function handleSearchButtonClick() {
+  
+  // get values of user input
+  const 
+    dateInput = d3.select("#datetime").property("value"),
+    cityInput = d3.select("#city").property("value"),
+    stateInput = d3.select("#state").property("value"),
+    countryInput = d3.select("#country").property("value"),
+    shapeInput = d3.select("#shape").property("value");
+    
+    // log user input for reference
+    console.log(dateInput)
+    console.log(cityInput)
+    console.log(stateInput)
+    console.log(countryInput)
+    console.log(shapeInput)
 
-  // set tableData to an array of the data that matches the user's input
-  tableData = data.filter(function(data) {
-    
-    const 
-      dateField = data.datetime,
-      cityField = data.city,
-      stateField = data.state,
-      countryField = data.country,
-      shapeField = data.shape;
-    
-    const returnedData = 
-      (dateInput.property("value") === "" || dateInput.property("value") === dateField) &&
-      (cityInput.property("value") === "" || cityInput.property("value") === cityField) &&
-      (stateInput.property("value") === "" || stateInput.property("value") === stateField) &&
-      (countryInput.property("value") === "" || countryInput.property("value") === countryField) &&
-      (shapeInput.property("value") === "" || shapeInput.property("value") === shapeField);
-    return returnedData;
-  });
-  renderTable();
+
+  let filteredData = tableData
+  if (dateInput){
+    filteredData = filteredData.filter(function(row){
+      let date = row.datetime.toLowerCase();
+      return date === dateInput
+    })
+  }
+  if (cityInput){
+    filteredData = filteredData.filter(function(row){
+      let city = row.city.toLowerCase();
+      return city === cityInput
+    })
+  }
+  if (stateInput){
+    filteredData = filteredData.filter(function(row){
+      let state = row.state.toLowerCase();
+      return state === stateInput
+    })
+  }
+  if (countryInput){
+    filteredData = filteredData.filter(function(row){
+      let country = row.country.toLowerCase();
+      return country === countryInput
+    })
+  }
+  if (shapeInput){
+    filteredData = filteredData.filter(function(row){
+      let shape = row.shape.toLowerCase();
+      return shape === shapeInput
+    })
+  }
+
+  // log filtered data for reference
+  console.log(filteredData)
+  renderTable(filteredData)
 };
 
 
-// print default table
-renderTable();
+// render default table
+renderTable(tableData);
